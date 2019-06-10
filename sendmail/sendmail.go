@@ -31,5 +31,9 @@ func (s SMTPServer) SendMail(dest []string, subject string, text []byte, html []
 			return err
 		}
 	}
-	return e.Send(s.URL, smtp.PlainAuth("", s.ID, s.PW, s.Host))
+	a := smtp.PlainAuth("", s.ID, s.PW, s.Host)
+	if s.ID == "" && s.PW == "" {
+		a = nil
+	}
+	return e.Send(s.URL, a)
 }
